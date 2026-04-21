@@ -1,3 +1,4 @@
+import { ApiError, ApiResponse, ErrorCode } from '@/types/api-response';
 import axios, {
   AxiosInstance,
   AxiosResponse,
@@ -21,38 +22,56 @@ export abstract class Http {
       (response: AxiosResponse) => {
         const apiResponseData = response.data;
         if (!apiResponseData.success) {
-          return Promise.reject(response.data as unknown);
+          return Promise.reject(apiResponseData as ApiError);
         }
+
         return response;
       },
       (error) => {
-        return Promise.reject(error);
+        const apiErr = error.response?.data ?? {
+          success: false,
+          status: error.response?.status ?? 0,
+          data: null,
+          error: {
+            code: ErrorCode.NETWORK_ERROR,
+            message: error.message ?? 'Network error',
+          },
+        };
+        return Promise.reject(apiErr);
       }
     );
   }
 
   async get<T>(url: string, config?: AxiosRequestConfig) {
-    const res = await this.axiosInstance.get<T>(url, config);
+    const res = await this.axiosInstance.get<ApiResponse<T>>(url, config);
     return res.data;
   }
 
   async post<T>(url: string, body?: unknown, config?: AxiosRequestConfig) {
-    const res = await this.axiosInstance.post<T>(url, body, config);
+    const res = await this.axiosInstance.post<ApiResponse<T>>(
+      url,
+      body,
+      config
+    );
     return res.data;
   }
 
   async put<T>(url: string, body?: unknown, config?: AxiosRequestConfig) {
-    const res = await this.axiosInstance.put<T>(url, body, config);
+    const res = await this.axiosInstance.put<ApiResponse<T>>(url, body, config);
     return res.data;
   }
 
   async patch<T>(url: string, body?: unknown, config?: AxiosRequestConfig) {
-    const res = await this.axiosInstance.patch<T>(url, body, config);
+    const res = await this.axiosInstance.patch<ApiResponse<T>>(
+      url,
+      body,
+      config
+    );
     return res.data;
   }
 
   async delete<T>(url: string, config?: AxiosRequestConfig) {
-    const res = await this.axiosInstance.delete<T>(url, config);
+    const res = await this.axiosInstance.delete<ApiResponse<T>>(url, config);
     return res.data;
   }
 }
