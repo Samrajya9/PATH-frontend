@@ -29,7 +29,7 @@ export default function RootLayout({
         inter.variable
       )}
     >
-      <body>
+      <body cz-shortcut-listen="true">
         {/* TODO need to add Auth Providers also */}
         <ReactQueryProvider>
           <ThemeProvider>
