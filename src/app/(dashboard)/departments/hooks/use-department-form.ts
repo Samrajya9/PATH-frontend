@@ -10,10 +10,10 @@ const defaultValues: z.infer<typeof departmentFormSchema> = {
 };
 
 export default function useDepartmentForm({
-  initialValue = {},
+  initialValue,
 }: {
   initialValue?: Partial<z.infer<typeof departmentFormSchema>>;
-}) {
+} = {}) {
   const form = useForm<z.infer<typeof departmentFormSchema>>({
     defaultValues: {
       ...defaultValues,

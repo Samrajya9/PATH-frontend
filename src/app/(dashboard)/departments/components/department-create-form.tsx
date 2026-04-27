@@ -13,7 +13,7 @@ import { MODAL_REGISTRY } from '@/constants/modal/modal-component-registry';
 
 const DepartmentCreateForm = () => {
   const queryClient = getQueryClient();
-  const form = useDepartmentForm({});
+  const form = useDepartmentForm();
   const { mutateAsync: createDepartment, isPending } = useMutation(
     createDepartmentOptions({
       queryClient,

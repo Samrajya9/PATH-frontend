@@ -23,7 +23,16 @@ export const UpdateDepartmentForm = ({
   const { closeModal } = useDialogContext();
 
   const { mutateAsync: updateDepartment, isPending } = useMutation(
-    updateDepartmentOptions({ queryClient, id, options: {} })
+    updateDepartmentOptions({
+      queryClient,
+      id,
+      options: {
+        onSuccess: (data) => {
+          form.reset();
+          closeModal(MODAL_REGISTRY.UPDATE_DEPARTMENT_MODAL_ID);
+        },
+      },
+    })
   );
   const onSubmit = form.handleSubmit(async (data) => {
     await updateDepartment(data);
