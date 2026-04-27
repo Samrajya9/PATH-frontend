@@ -19,6 +19,7 @@ const config: CreateAxiosDefaults = {
   headers: { 'Content-Type': 'application/json' },
   proxy: false, // ✅ Fix Node 24 proxy warning
 };
+
 class ServerHttp extends Http {
   constructor() {
     super(config);

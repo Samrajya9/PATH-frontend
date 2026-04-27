@@ -1,4 +1,4 @@
-import { ApiError, ApiResponse, ErrorCode } from '@/types/api-response';
+import { ApiError, ApiResponse } from '@/types/api-response';
 import axios, {
   AxiosInstance,
   AxiosResponse,
@@ -33,7 +33,7 @@ export abstract class Http {
           status: error.response?.status ?? 0,
           data: null,
           error: {
-            code: ErrorCode.NETWORK_ERROR,
+            code: 'NETWORK_ERROR',
             message: error.message ?? 'Network error',
           },
         };

@@ -31,6 +31,8 @@ export default function RootLayout({
     >
       <body cz-shortcut-listen="true">
         {/* TODO need to add Auth Providers also */}
+        {/* TODO need to add query key ulti function */}
+        {/* TODO need to add class for fetching data */}
         <ReactQueryProvider>
           <ThemeProvider>
             <TooltipProvider>{children}</TooltipProvider>
