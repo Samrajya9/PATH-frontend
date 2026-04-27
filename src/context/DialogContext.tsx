@@ -1,4 +1,3 @@
-import { Dialog } from '@/components/ui/dialog';
 import { createContext, useContext, useState, type ReactNode } from 'react';
 
 export interface Modal {

@@ -31,21 +31,18 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { MoreHorizontal, Pencil, Trash2, Eye } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { getAllDepartmentsOptions } from '../hooks/queries/department-queries-options';
+import { useDialogContext } from '@/hooks/use-dailog';
+import { MODAL_REGISTRY } from '@/constants/modal/modal-component-registry';
+import UpdateDepartmentModal from './update-department-modal';
+import { id } from 'zod/locales';
 
 const DepartmentTable = () => {
   const [page, setPage] = useState(1);
   const [limit, setLimit] = useState(10);
+  const { openModal } = useDialogContext();
 
-  const { data } = useSuspenseQuery({
-    queryKey: [...departmentQueryKeys.all, { page, limit }],
-    queryFn: async () => {
-      const response = await clientHttp.get<{
-        departments: Department[];
-        meta: Meta;
-      }>('departments', { params: { page, limit } });
-      return response.data;
-    },
-  });
+  const { data } = useSuspenseQuery(getAllDepartmentsOptions({ page, limit }));
 
   const departments = data?.departments ?? [];
   const meta = data?.meta;
@@ -79,7 +76,7 @@ const DepartmentTable = () => {
   return (
     <div className="space-y-4">
       {/* Table */}
-      <div className="overflow-hidden rounded-lg border border-border">
+      <div className={`overflow-hidden rounded-lg border border-border`}>
         <Table>
           <TableHeader>
             <TableRow className="bg-muted/40 hover:bg-muted/40">
@@ -160,7 +157,12 @@ const DepartmentTable = () => {
                           View Details
                         </DropdownMenuItem>
                         <DropdownMenuItem
-                          onClick={() => console.log('update', dept.id)}
+                          onClick={() => {
+                            openModal(
+                              MODAL_REGISTRY.UPDATE_DEPARTMENT_MODAL_ID,
+                              <UpdateDepartmentModal id={dept.id} data={dept} />
+                            );
+                          }}
                           className="cursor-pointer gap-2"
                         >
                           <Pencil className="size-4 text-muted-foreground" />

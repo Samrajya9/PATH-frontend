@@ -1,12 +1,11 @@
-import { createEnv } from "@t3-oss/env-nextjs";
-import { z } from "zod";
-
+import { createEnv } from '@t3-oss/env-nextjs';
+import z from 'zod';
 
 export const envClient = createEnv({
-    client :{
-        NEXT_PUBLIC_APP_URL: z.url({ error: "Invalid URL" }),
-    },  
-    runtimeEnv: {
-        NEXT_PUBLIC_APP_URL: process.env.NEXT_PUBLIC_APP_URL,
-    },
-})
+  client: {
+    NEXT_PUBLIC_APP_URL: z.url({ error: 'Invalid URL' }),
+  },
+  runtimeEnv: {
+    NEXT_PUBLIC_APP_URL: process.env.NEXT_PUBLIC_APP_URL,
+  },
+});

@@ -1,3 +1,4 @@
+'use client';
 import { DialogContext, Modal } from '@/context/DialogContext';
 import { Dialog } from '@/components/ui/dialog';
 
@@ -5,8 +6,6 @@ import { ReactNode, useState } from 'react';
 
 export const DialogProvider = ({ children }: { children: ReactNode }) => {
   const [modals, setModals] = useState<Modal[]>([]);
-
-  console.log(modals);
 
   const openModal = (id: string, content: ReactNode) => {
     setModals((prev) => {
