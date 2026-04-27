@@ -4,7 +4,6 @@ import DepartmentTable from './components/department-table';
 import departmentQueryKeys from './constants/department.queryKeys';
 import { Department } from '@/types/departments';
 import { Meta } from '@/types/data-response-meta';
-import { Button } from '@/components/ui/button';
 import CreateDepartmentButton from './components/create-department-button';
 
 const page = () => {

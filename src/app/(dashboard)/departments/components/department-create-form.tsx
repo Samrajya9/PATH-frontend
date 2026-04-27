@@ -24,7 +24,6 @@ const DepartmentCreateForm = () => {
           closeModal(MODAL_REGISTRY.CREATE_DEPARTMENT_MODAL_ID);
         },
         onError: (error) => {
-          form.reset();
           toast.error(error.message);
         },
       },
@@ -41,6 +40,7 @@ const DepartmentCreateForm = () => {
     <FormProvider {...form}>
       <form id="form-create-department" onSubmit={onSubmit}>
         <DepartmentFormFields />
+
         <div className="flex flex-col-reverse gap-2 pt-2 sm:flex-row sm:gap-3 sm:pt-4">
           <Button type="button" variant="outline" className="w-full sm:w-auto">
             Cancel

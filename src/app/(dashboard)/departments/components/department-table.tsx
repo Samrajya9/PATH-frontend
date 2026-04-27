@@ -1,7 +1,7 @@
 'use client';
 import { useState } from 'react';
 import { clientHttp } from '@/lib/axios/client.axios';
-import { useQuery, useSuspenseQuery } from '@tanstack/react-query';
+import { useMutation, useQuery, useSuspenseQuery } from '@tanstack/react-query';
 import departmentQueryKeys from '../constants/department.queryKeys';
 import { Department } from '@/types/departments';
 import { Meta } from '@/types/data-response-meta';
@@ -31,11 +31,15 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { MoreHorizontal, Pencil, Trash2, Eye } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { getAllDepartmentsOptions } from '../hooks/queries/department-queries-options';
+import {
+  deleteDepartmentOptions,
+  getAllDepartmentsOptions,
+} from '../hooks/queries/department-queries-options';
 import { useDialogContext } from '@/hooks/use-dailog';
 import { MODAL_REGISTRY } from '@/constants/modal/modal-component-registry';
 import UpdateDepartmentModal from './update-department-modal';
-import { id } from 'zod/locales';
+import { getQueryClient } from '@/lib/query-client';
+import { toast } from 'sonner';
 
 const DepartmentTable = () => {
   const [page, setPage] = useState(1);
@@ -43,6 +47,21 @@ const DepartmentTable = () => {
   const { openModal } = useDialogContext();
 
   const { data } = useSuspenseQuery(getAllDepartmentsOptions({ page, limit }));
+
+  const queryClient = getQueryClient();
+  const { mutate: deleteDepartment } = useMutation(
+    deleteDepartmentOptions({
+      queryClient,
+      options: {
+        onSuccess: (data) => {
+          toast.success(data.message);
+        },
+        onError: (error) => {
+          toast.error(error.message);
+        },
+      },
+    })
+  );
 
   const departments = data?.departments ?? [];
   const meta = data?.meta;
@@ -150,13 +169,6 @@ const DepartmentTable = () => {
                       </DropdownMenuTrigger>
                       <DropdownMenuContent align="end" className="w-44">
                         <DropdownMenuItem
-                          onClick={() => console.log('view', dept.id)}
-                          className="cursor-pointer gap-2"
-                        >
-                          <Eye className="size-4 text-muted-foreground" />
-                          View Details
-                        </DropdownMenuItem>
-                        <DropdownMenuItem
                           onClick={() => {
                             openModal(
                               MODAL_REGISTRY.UPDATE_DEPARTMENT_MODAL_ID,
@@ -171,7 +183,9 @@ const DepartmentTable = () => {
                         <DropdownMenuSeparator />
                         <DropdownMenuItem
                           variant="destructive"
-                          onClick={() => console.log('delete', dept.id)}
+                          onClick={() => {
+                            deleteDepartment(dept.id);
+                          }}
                           className="cursor-pointer gap-2"
                         >
                           <Trash2 className="size-4" />

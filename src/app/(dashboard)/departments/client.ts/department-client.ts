@@ -9,27 +9,30 @@ import { DepartmentFormValues } from '../types/department-form.types';
 class DepartmentClient {
   private readonly DEPARTMENT_ENDPOINT = '/departments';
   async createDepartment(data: DepartmentFormValues) {
-    const response = await clientHttp.post<{ department: Department }>(
+    return await clientHttp.post<{ department: Department }>(
       this.DEPARTMENT_ENDPOINT,
       data
     );
-    return response;
   }
 
   async getAllDepartments({ page, limit }: { page: number; limit: number }) {
-    const response = await clientHttp.get<{
+    return await clientHttp.get<{
       departments: Department[];
       meta: Meta;
     }>(this.DEPARTMENT_ENDPOINT, { params: { page, limit } });
-    return response;
   }
 
   async updateDepartment(id: number, data: Partial<DepartmentFormValues>) {
-    const response = await clientHttp.patch<{ department: Department }>(
+    return await clientHttp.patch<{ department: Department }>(
       `${this.DEPARTMENT_ENDPOINT}/${id}`,
       data
     );
-    return response;
+  }
+
+  async deleteDepartment(id: number) {
+    return await clientHttp.delete<{ department: Department }>(
+      `${this.DEPARTMENT_ENDPOINT}/${id}`
+    );
   }
 }
 

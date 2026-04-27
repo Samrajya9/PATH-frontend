@@ -4,7 +4,6 @@ import {
   UseMutationOptions,
   UseSuspenseQueryOptions,
 } from '@tanstack/react-query';
-import z from 'zod';
 import departmentClient from '../../client.ts/department-client';
 import departmentQueryKeys from '../../constants/department.queryKeys';
 import { ApiSuccess } from '@/types/api-response';
@@ -93,6 +92,36 @@ export const updateDepartmentOptions = ({
       queryClient.invalidateQueries({
         queryKey: departmentQueryKeys.all,
       });
+      options?.onSuccess?.(...args);
+    },
+    onError: (...args) => {
+      options?.onError?.(...args);
+    },
+  };
+};
+
+export const deleteDepartmentOptions = ({
+  queryClient,
+  options,
+}: {
+  queryClient: QueryClient;
+  options?: UseMutationOptions<
+    ApiSuccess<{ department: Department }>,
+    Error,
+    number
+  >;
+}): UseMutationOptions<
+  ApiSuccess<{ department: Department }>,
+  Error,
+  number
+> => {
+  return {
+    ...options,
+    mutationFn: async (id: number) => {
+      return await departmentClient.deleteDepartment(id);
+    },
+    onSuccess: (...args) => {
+      queryClient.invalidateQueries({ queryKey: departmentQueryKeys.all });
       options?.onSuccess?.(...args);
     },
     onError: (...args) => {
