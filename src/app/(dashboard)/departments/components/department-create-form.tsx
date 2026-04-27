@@ -10,6 +10,7 @@ import { createDepartmentOptions } from '../hooks/queries/department-queries-opt
 import { toast } from 'sonner';
 import { useDialogContext } from '@/hooks/use-dailog';
 import { MODAL_REGISTRY } from '@/constants/modal/modal-component-registry';
+import { Field, FieldGroup } from '@/components/ui/field';
 
 const DepartmentCreateForm = () => {
   const queryClient = getQueryClient();
@@ -39,21 +40,18 @@ const DepartmentCreateForm = () => {
   return (
     <FormProvider {...form}>
       <form id="form-create-department" onSubmit={onSubmit}>
-        <DepartmentFormFields />
+        <FieldGroup>
+          <DepartmentFormFields />
+          <Field orientation="horizontal">
+            <Button type="button" variant="outline">
+              Cancel
+            </Button>
 
-        <div className="flex flex-col-reverse gap-2 pt-2 sm:flex-row sm:gap-3 sm:pt-4">
-          <Button type="button" variant="outline" className="w-full sm:w-auto">
-            Cancel
-          </Button>
-
-          <Button
-            type="submit"
-            className="w-full sm:w-auto"
-            disabled={isLoading}
-          >
-            {isLoading ? 'Creating...' : 'Create Department'}
-          </Button>
-        </div>
+            <Button type="submit" disabled={isLoading}>
+              {isLoading ? 'Creating...' : 'Create Department'}
+            </Button>
+          </Field>
+        </FieldGroup>
       </form>
     </FormProvider>
   );

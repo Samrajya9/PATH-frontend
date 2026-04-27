@@ -10,6 +10,7 @@ import DepartmentFormFields from './department-form-fields';
 import { Button } from '@/components/ui/button';
 import { MODAL_REGISTRY } from '@/constants/modal/modal-component-registry';
 import { useDialogContext } from '@/hooks/use-dailog';
+import { Field, FieldGroup } from '@/components/ui/field';
 
 export const UpdateDepartmentForm = ({
   id,
@@ -25,9 +26,8 @@ export const UpdateDepartmentForm = ({
   const { mutateAsync: updateDepartment, isPending } = useMutation(
     updateDepartmentOptions({
       queryClient,
-      id,
       options: {
-        onSuccess: (data) => {
+        onSuccess: () => {
           form.reset();
           closeModal(MODAL_REGISTRY.UPDATE_DEPARTMENT_MODAL_ID);
         },
@@ -35,7 +35,7 @@ export const UpdateDepartmentForm = ({
     })
   );
   const onSubmit = form.handleSubmit(async (data) => {
-    await updateDepartment(data);
+    await updateDepartment({ id, data });
   });
 
   const isLoading = form.formState.isSubmitting || isPending;
@@ -43,27 +43,29 @@ export const UpdateDepartmentForm = ({
   return (
     <FormProvider {...form}>
       <form id="form-update-department" onSubmit={onSubmit}>
-        <DepartmentFormFields />
-        <div className="flex flex-col-reverse gap-2 pt-2 sm:flex-row sm:gap-3 sm:pt-4">
-          <Button
-            type="button"
-            variant="outline"
-            className="w-full sm:w-auto"
-            onClick={() => {
-              closeModal(MODAL_REGISTRY.UPDATE_DEPARTMENT_MODAL_ID);
-            }}
-          >
-            Cancel
-          </Button>
+        <FieldGroup>
+          <DepartmentFormFields />
+          <Field orientation="horizontal">
+            <Button
+              type="button"
+              variant="outline"
+              className="w-full sm:w-auto"
+              onClick={() => {
+                closeModal(MODAL_REGISTRY.UPDATE_DEPARTMENT_MODAL_ID);
+              }}
+            >
+              Cancel
+            </Button>
 
-          <Button
-            type="submit"
-            className="w-full sm:w-auto"
-            disabled={isLoading}
-          >
-            {isLoading ? 'Updating...' : 'Update Department'}
-          </Button>
-        </div>
+            <Button
+              type="submit"
+              className="w-full sm:w-auto"
+              disabled={isLoading}
+            >
+              {isLoading ? 'Updating...' : 'Update Department'}
+            </Button>
+          </Field>
+        </FieldGroup>
       </form>
     </FormProvider>
   );

@@ -1,4 +1,3 @@
-// department-queries-options.ts
 import {
   QueryClient,
   UseMutationOptions,
@@ -11,24 +10,25 @@ import { Department } from '@/types/departments';
 import { Meta } from '@/types/data-response-meta';
 import { DepartmentFormValues } from '../../types/department-form.types';
 
-type CreateDepartmentVariables = DepartmentFormValues;
-type CreateDepartmentResponse = ApiSuccess<{ department: Department }>;
+type DepartmentResponse = ApiSuccess<{ department: Department }>;
 
+type UpdateDepartmentVariables = {
+  id: number;
+  data: Partial<DepartmentFormValues>;
+};
+
+type CreateDepartmentMutationOptions = UseMutationOptions<
+  DepartmentResponse,
+  Error,
+  DepartmentFormValues
+>;
 export const createDepartmentOptions = ({
   queryClient,
   options,
 }: {
   queryClient: QueryClient;
-  options?: UseMutationOptions<
-    CreateDepartmentResponse,
-    Error,
-    CreateDepartmentVariables
-  >;
-}): UseMutationOptions<
-  CreateDepartmentResponse,
-  Error,
-  CreateDepartmentVariables
-> => {
+  options?: CreateDepartmentMutationOptions;
+}): CreateDepartmentMutationOptions => {
   return {
     ...options,
     mutationFn: async (data) => {
@@ -63,29 +63,22 @@ export const getAllDepartmentsOptions = ({
   };
 };
 
-type UpdateDepartmentVariables = Partial<DepartmentFormValues>;
-type UpdateDepartmentResponse = ApiSuccess<{ department: Department }>;
+type UpdateDepartmentMutationOptions = UseMutationOptions<
+  DepartmentResponse,
+  Error,
+  UpdateDepartmentVariables
+>;
 
 export const updateDepartmentOptions = ({
   queryClient,
   options,
-  id,
 }: {
   queryClient: QueryClient;
-  options?: UseMutationOptions<
-    UpdateDepartmentResponse,
-    Error,
-    UpdateDepartmentVariables
-  >;
-  id: number;
-}): UseMutationOptions<
-  UpdateDepartmentResponse,
-  Error,
-  UpdateDepartmentVariables
-> => {
+  options?: UpdateDepartmentMutationOptions;
+}): UpdateDepartmentMutationOptions => {
   return {
     ...options,
-    mutationFn: async (data) => {
+    mutationFn: async ({ id, data }) => {
       return await departmentClient.updateDepartment(id, data);
     },
     onSuccess: (...args) => {
@@ -100,21 +93,18 @@ export const updateDepartmentOptions = ({
   };
 };
 
+type DeleteDepartmentMutationOptions = UseMutationOptions<
+  DepartmentResponse,
+  Error,
+  number
+>;
 export const deleteDepartmentOptions = ({
   queryClient,
   options,
 }: {
   queryClient: QueryClient;
-  options?: UseMutationOptions<
-    ApiSuccess<{ department: Department }>,
-    Error,
-    number
-  >;
-}): UseMutationOptions<
-  ApiSuccess<{ department: Department }>,
-  Error,
-  number
-> => {
+  options?: DeleteDepartmentMutationOptions;
+}): DeleteDepartmentMutationOptions => {
   return {
     ...options,
     mutationFn: async (id: number) => {
