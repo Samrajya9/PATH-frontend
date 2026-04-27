@@ -10,7 +10,7 @@
 type BaseApiResponse = {
   success: boolean;
   message: string;
-  status: number;
+  status: number; // HTTP staus code
 };
 
 export type ApiSuccess<T> = BaseApiResponse & {

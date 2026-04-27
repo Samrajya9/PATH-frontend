@@ -1,4 +1,4 @@
-import { ApiError, ApiResponse } from '@/types/api-response';
+import { ApiError, ApiResponse, ApiSuccess } from '@/types/api-response';
 import axios, {
   AxiosInstance,
   AxiosResponse,
@@ -43,26 +43,22 @@ export abstract class Http {
   }
 
   async get<T>(url: string, config?: AxiosRequestConfig) {
-    const res = await this.axiosInstance.get<ApiResponse<T>>(url, config);
+    const res = await this.axiosInstance.get<ApiSuccess<T>>(url, config);
     return res.data;
   }
 
   async post<T>(url: string, body?: unknown, config?: AxiosRequestConfig) {
-    const res = await this.axiosInstance.post<ApiResponse<T>>(
-      url,
-      body,
-      config
-    );
+    const res = await this.axiosInstance.post<ApiSuccess<T>>(url, body, config);
     return res.data;
   }
 
   async put<T>(url: string, body?: unknown, config?: AxiosRequestConfig) {
-    const res = await this.axiosInstance.put<ApiResponse<T>>(url, body, config);
+    const res = await this.axiosInstance.put<ApiSuccess<T>>(url, body, config);
     return res.data;
   }
 
   async patch<T>(url: string, body?: unknown, config?: AxiosRequestConfig) {
-    const res = await this.axiosInstance.patch<ApiResponse<T>>(
+    const res = await this.axiosInstance.patch<ApiSuccess<T>>(
       url,
       body,
       config
@@ -71,7 +67,7 @@ export abstract class Http {
   }
 
   async delete<T>(url: string, config?: AxiosRequestConfig) {
-    const res = await this.axiosInstance.delete<ApiResponse<T>>(url, config);
+    const res = await this.axiosInstance.delete<ApiSuccess<T>>(url, config);
     return res.data;
   }
 }

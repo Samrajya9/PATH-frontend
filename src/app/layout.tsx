@@ -5,6 +5,8 @@ import { ThemeProvider } from '@/components/theme-provider';
 import { cn } from '@/lib/utils';
 import { ReactQueryProvider } from '@/providers/react-query-providers';
 import { TooltipProvider } from '@/components/ui/tooltip';
+import { Toaster } from '@/components/ui/sonner';
+import { DialogProvider } from '@/context/DialogContext';
 
 const inter = Inter({ subsets: ['latin'], variable: '--font-sans' });
 
@@ -35,7 +37,12 @@ export default function RootLayout({
         {/* TODO need to add class for fetching data */}
         <ReactQueryProvider>
           <ThemeProvider>
-            <TooltipProvider>{children}</TooltipProvider>
+            <DialogProvider>
+              <TooltipProvider>
+                <Toaster />
+                {children}
+              </TooltipProvider>
+            </DialogProvider>
           </ThemeProvider>
         </ReactQueryProvider>
       </body>
