@@ -5,15 +5,14 @@ import {
   UseSuspenseQueryOptions,
 } from '@tanstack/react-query';
 import z from 'zod';
-import { departmentFormSchema } from '../../schemas/department-form.schema';
 import departmentClient from '../../client.ts/department-client';
 import departmentQueryKeys from '../../constants/department.queryKeys';
 import { ApiSuccess } from '@/types/api-response';
 import { Department } from '@/types/departments';
 import { Meta } from '@/types/data-response-meta';
-import { id } from 'zod/locales';
+import { DepartmentFormValues } from '../../types/department-form.types';
 
-type CreateDepartmentVariables = z.infer<typeof departmentFormSchema>;
+type CreateDepartmentVariables = DepartmentFormValues;
 type CreateDepartmentResponse = ApiSuccess<{ department: Department }>;
 
 export const createDepartmentOptions = ({
@@ -65,7 +64,7 @@ export const getAllDepartmentsOptions = ({
   };
 };
 
-type UpdateDepartmentVariables = Partial<z.infer<typeof departmentFormSchema>>;
+type UpdateDepartmentVariables = Partial<DepartmentFormValues>;
 type UpdateDepartmentResponse = ApiSuccess<{ department: Department }>;
 
 export const updateDepartmentOptions = ({
@@ -92,7 +91,7 @@ export const updateDepartmentOptions = ({
     },
     onSuccess: (...args) => {
       queryClient.invalidateQueries({
-        queryKey: departmentQueryKeys.detail(id),
+        queryKey: departmentQueryKeys.all,
       });
       options?.onSuccess?.(...args);
     },

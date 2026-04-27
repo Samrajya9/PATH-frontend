@@ -2,19 +2,19 @@
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
-import z from 'zod';
 import { departmentFormSchema } from '../schemas/department-form.schema';
+import { DepartmentFormValues } from '../types/department-form.types';
 
-const defaultValues: z.infer<typeof departmentFormSchema> = {
+const defaultValues: DepartmentFormValues = {
   name: '',
 };
 
 export default function useDepartmentForm({
   initialValue,
 }: {
-  initialValue?: Partial<z.infer<typeof departmentFormSchema>>;
+  initialValue?: Partial<DepartmentFormValues>;
 } = {}) {
-  const form = useForm<z.infer<typeof departmentFormSchema>>({
+  const form = useForm<DepartmentFormValues>({
     defaultValues: {
       ...defaultValues,
       ...initialValue,
