@@ -6,7 +6,7 @@ import { cn } from '@/lib/utils';
 import { ReactQueryProvider } from '@/providers/react-query-providers';
 import { TooltipProvider } from '@/components/ui/tooltip';
 import { Toaster } from '@/components/ui/sonner';
-import { DialogProvider } from '@/context/DialogContext';
+import { DialogProvider } from '@/providers/dailog-provider';
 
 const inter = Inter({ subsets: ['latin'], variable: '--font-sans' });
 
