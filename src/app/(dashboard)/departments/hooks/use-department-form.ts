@@ -4,7 +4,10 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import z from 'zod';
 import { departmentFormSchema } from '../schemas/department-form.schema';
-import { useEffect } from 'react';
+
+const defaultValues: z.infer<typeof departmentFormSchema> = {
+  name: '',
+};
 
 export default function useDepartmentForm({
   initialValue = {},
@@ -13,16 +16,11 @@ export default function useDepartmentForm({
 }) {
   const form = useForm<z.infer<typeof departmentFormSchema>>({
     defaultValues: {
-      name: '',
+      ...defaultValues,
+      ...initialValue,
     },
     resolver: zodResolver(departmentFormSchema),
   });
-
-  useEffect(() => {
-    if (initialValue) {
-      form.reset({ ...initialValue });
-    }
-  }, [initialValue]);
 
   return form;
 }
