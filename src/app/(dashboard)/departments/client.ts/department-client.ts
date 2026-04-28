@@ -1,6 +1,4 @@
 import { clientHttp } from '@/lib/axios/client.axios';
-import z from 'zod';
-import { departmentFormSchema } from '../schemas/department-form.schema';
 import { Department } from '@/types/departments';
 import { Meta } from '@/types/data-response-meta';
 import { DepartmentFormValues } from '../types/department-form.types';
