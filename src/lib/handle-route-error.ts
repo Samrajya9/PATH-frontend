@@ -2,11 +2,12 @@ import { ApiError } from '@/types/api-response';
 import { NextResponse } from 'next/server';
 
 export function handleRouteError(error: unknown): NextResponse {
+  console.log('Error in route handler : ', error);
   const apiError = error as ApiError;
 
   if (apiError.success === false) {
     return NextResponse.json(apiError, {
-      status: apiError.status ?? 500,
+      status: apiError.status || 500,
     });
   }
   // Fallback for anything unexpected

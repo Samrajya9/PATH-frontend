@@ -5,6 +5,7 @@ import departmentQueryKeys from './constants/department.queryKeys';
 import { Department } from '@/types/departments';
 import { Meta } from '@/types/data-response-meta';
 import CreateDepartmentButton from './components/create-department-button';
+import { ErrorBoundary } from '@/components/error-boundary';
 
 const page = () => {
   return (
@@ -13,6 +14,7 @@ const page = () => {
         fetchQueryOptions={[
           {
             queryKey: departmentQueryKeys.all,
+
             queryFn: async () => {
               const response = await serverHttp.get<{
                 departments: Department[];
@@ -27,7 +29,9 @@ const page = () => {
           <h2 className="text-2xl font-semibold">Departments</h2>
           <CreateDepartmentButton />
         </div>
-        <DepartmentTable />
+        <ErrorBoundary fallback={<p>Custom error UI</p>}>
+          <DepartmentTable />
+        </ErrorBoundary>
       </Prefetcher>
     </>
   );
