@@ -8,7 +8,10 @@ import testsQueryKeys from '../../constants/tests.queryKeys';
 import { Test } from '@/types/tests';
 import { Meta } from '@/types/data-response-meta';
 import { ApiSuccess } from '@/types/api-response';
-import { TestFormValues } from '../../types/test-form.types';
+import {
+  TestFormValues,
+  TestUpdateFormValues,
+} from '../../types/test-form.types';
 
 export const getAllTestsOptions = ({
   page,
@@ -89,6 +92,34 @@ export const deleteTestOptions = ({
     ...options,
     mutationFn: async (id: number) => {
       return await testClient.deleteTest(id);
+    },
+    onSuccess: (...args) => {
+      queryClient.invalidateQueries({ queryKey: testsQueryKeys.all });
+      options?.onSuccess?.(...args);
+    },
+    onError: (...args) => {
+      options?.onError?.(...args);
+    },
+  };
+};
+
+type UpdateTestMutationOptions = UseMutationOptions<
+  TestResponse,
+  Error,
+  { id: number; data: TestUpdateFormValues }
+>;
+
+export const updateTestOptions = ({
+  queryClient,
+  options,
+}: {
+  queryClient: QueryClient;
+  options?: UpdateTestMutationOptions;
+}): UpdateTestMutationOptions => {
+  return {
+    ...options,
+    mutationFn: async ({ id, data }) => {
+      return await testClient.updateTest(id, data);
     },
     onSuccess: (...args) => {
       queryClient.invalidateQueries({ queryKey: testsQueryKeys.all });

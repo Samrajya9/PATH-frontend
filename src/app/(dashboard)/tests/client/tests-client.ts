@@ -1,7 +1,7 @@
 import { clientHttp } from '@/lib/axios/client.axios';
 import { Test } from '@/types/tests';
 import { Meta } from '@/types/data-response-meta';
-import { TestFormValues } from '../types/test-form.types';
+import { TestFormValues, TestUpdateFormValues } from '../types/test-form.types';
 
 class TestClient {
   private readonly TESTS_ENDPOINT = '/tests';
@@ -23,6 +23,10 @@ class TestClient {
 
   async deleteTest(id: number) {
     return await clientHttp.delete<true>(`${this.TESTS_ENDPOINT}/${id}`);
+  }
+
+  async updateTest(id: number, data: TestUpdateFormValues) {
+    return await clientHttp.patch<Test>(`${this.TESTS_ENDPOINT}/${id}`, data);
   }
 }
 
