@@ -1,9 +1,12 @@
 'use client';
 
-import React, { useState } from 'react';
-import { useSuspenseQuery } from '@tanstack/react-query';
-import { Eye } from 'lucide-react';
-import { getAllTestsOptions } from '../hooks/queries/test-queries.options';
+import { useState } from 'react';
+import { useMutation, useSuspenseQuery } from '@tanstack/react-query';
+import { Edit, Eye, MoreHorizontal, Trash } from 'lucide-react';
+import {
+  deleteTestOptions,
+  getAllTestsOptions,
+} from '../hooks/queries/test-queries.options';
 import { MODAL_REGISTRY } from '@/constants/modal/modal-component-registry';
 import TestDetailModal from './test-detail-modal';
 import {
@@ -26,14 +29,51 @@ import {
   PaginationLink,
 } from '@/components/ui/pagination';
 import { useDialogContext } from '@/hooks/use-dailog';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
+import { getQueryClient } from '@/lib/query-client';
+import { toast } from 'sonner';
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from '@/components/ui/alert-dialog';
 
 export default function TestTable() {
+  const [pendingDeleteId, setPendingDeleteId] = useState<number | null>(null);
+  const queryClient = getQueryClient();
+
   const [page, setPage] = useState(1);
   const limit = 10;
 
   const { openModal } = useDialogContext();
 
   const { data } = useSuspenseQuery(getAllTestsOptions({ page, limit }));
+  const { mutate: deleteMutate, isPending: isDeleting } = useMutation(
+    deleteTestOptions({
+      queryClient,
+      options: {
+        onSuccess: (response) => {
+          setPendingDeleteId(null);
+          toast.success(response.message || 'Test deleted successfully');
+        },
+        onError: (error: any) => {
+          setPendingDeleteId(null);
+          toast.error(error.message || 'Failed to delete test');
+        },
+      },
+    })
+  );
+
   const { tests, meta } = data;
 
   const totalPages = meta?.totalPages ?? 1;
@@ -65,6 +105,31 @@ export default function TestTable() {
 
   return (
     <div className="space-y-4">
+      <AlertDialog
+        open={pendingDeleteId !== null}
+        onOpenChange={(open) => !open && setPendingDeleteId(null)}
+      >
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+            <AlertDialogDescription>
+              This action cannot be undone. This will permanently delete the
+              test unit.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel disabled={isDeleting}>Cancel</AlertDialogCancel>
+            <AlertDialogAction
+              className="text-destructive-foreground bg-destructive hover:bg-destructive/90"
+              disabled={isDeleting}
+              onClick={() => pendingDeleteId && deleteMutate(pendingDeleteId)}
+            >
+              {isDeleting ? 'Deleting...' : 'Delete'}
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+
       <div className="rounded-md border">
         <Table>
           <TableHeader>
@@ -100,19 +165,39 @@ export default function TestTable() {
                     </Badge>
                   </TableCell>
                   <TableCell className="text-right">
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      onClick={() =>
-                        openModal(
-                          MODAL_REGISTRY.VIEW_TEST_DETAIL_MODAL_ID,
-                          <TestDetailModal id={row.id} />
-                        )
-                      }
-                    >
-                      <Eye className="mr-2 h-4 w-4" />
-                      View Detail
-                    </Button>
+                    <DropdownMenu>
+                      <DropdownMenuTrigger asChild>
+                        <Button variant="ghost" className="h-8 w-8 p-0">
+                          <span className="sr-only">Open menu</span>
+                          <MoreHorizontal className="h-4 w-4" />
+                        </Button>
+                      </DropdownMenuTrigger>
+                      <DropdownMenuContent align="end">
+                        <DropdownMenuItem
+                          onClick={() =>
+                            openModal(
+                              MODAL_REGISTRY.VIEW_TEST_DETAIL_MODAL_ID,
+                              <TestDetailModal id={row.id} />
+                            )
+                          }
+                        >
+                          <Eye className="mr-2 h-4 w-4" />
+                          View Detail
+                        </DropdownMenuItem>
+
+                        <DropdownMenuItem>
+                          <Edit className="mr-2 h-4 w-4" />
+                          Update
+                        </DropdownMenuItem>
+                        <DropdownMenuItem
+                          className="text-destructive focus:text-destructive"
+                          onClick={() => setPendingDeleteId(row.id)}
+                        >
+                          <Trash className="mr-2 h-4 w-4" />
+                          Delete
+                        </DropdownMenuItem>
+                      </DropdownMenuContent>
+                    </DropdownMenu>
                   </TableCell>
                 </TableRow>
               ))

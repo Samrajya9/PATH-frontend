@@ -49,13 +49,14 @@ import {
   PaginationLink,
 } from '@/components/ui/pagination';
 import { useDialogContext } from '@/hooks/use-dailog';
+import { getQueryClient } from '@/lib/query-client';
 
 export default function TestUnitTable() {
   const [page, setPage] = useState(1);
   const limit = 10;
   const [pendingDeleteId, setPendingDeleteId] = useState<number | null>(null);
 
-  const queryClient = useQueryClient();
+  const queryClient = getQueryClient();
   const { openModal } = useDialogContext();
 
   const { data } = useSuspenseQuery(getAllTestUnitsOptions({ page, limit }));

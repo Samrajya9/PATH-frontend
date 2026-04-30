@@ -1,6 +1,5 @@
 import {
   UseSuspenseQueryOptions,
-  UseQueryOptions,
   QueryClient,
   UseMutationOptions,
 } from '@tanstack/react-query';
@@ -63,6 +62,33 @@ export const createTestOptions = ({
     ...options,
     mutationFn: async (data) => {
       return await testClient.createTest(data);
+    },
+    onSuccess: (...args) => {
+      queryClient.invalidateQueries({ queryKey: testsQueryKeys.all });
+      options?.onSuccess?.(...args);
+    },
+    onError: (...args) => {
+      options?.onError?.(...args);
+    },
+  };
+};
+
+type DeleteTestMutationOptions = UseMutationOptions<
+  ApiSuccess<true>,
+  Error,
+  number
+>;
+export const deleteTestOptions = ({
+  queryClient,
+  options,
+}: {
+  queryClient: QueryClient;
+  options?: DeleteTestMutationOptions;
+}): DeleteTestMutationOptions => {
+  return {
+    ...options,
+    mutationFn: async (id: number) => {
+      return await testClient.deleteTest(id);
     },
     onSuccess: (...args) => {
       queryClient.invalidateQueries({ queryKey: testsQueryKeys.all });

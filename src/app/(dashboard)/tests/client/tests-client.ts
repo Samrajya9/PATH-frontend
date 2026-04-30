@@ -20,6 +20,10 @@ class TestClient {
   async createTest(data: TestFormValues) {
     return await clientHttp.post<Test>(`${this.TESTS_ENDPOINT}`, data);
   }
+
+  async deleteTest(id: number) {
+    return await clientHttp.delete<true>(`${this.TESTS_ENDPOINT}/${id}`);
+  }
 }
 
 const testClient = new TestClient();
