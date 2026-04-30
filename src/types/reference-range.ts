@@ -1,9 +1,9 @@
 import { BaseAPIResource } from './base-api-resource';
 
 export enum GenderEnum {
-  MALE = 'Male',
-  FEMALE = 'Female',
-  ANY = 'Any',
+  MALE = 'male',
+  FEMALE = 'female',
+  ANY = 'any',
 }
 
 export type ReferenceRange = BaseAPIResource & {

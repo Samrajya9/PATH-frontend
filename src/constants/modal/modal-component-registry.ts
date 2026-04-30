@@ -4,4 +4,5 @@ export const MODAL_REGISTRY = {
   CREATE_TEST_UNIT_MODAL_ID: 'create-test-unit',
   UPDATE_TEST_UNIT_MODAL_ID: 'update-test-unit',
   VIEW_TEST_DETAIL_MODAL_ID: 'view-test-detail',
+  CREATE_TEST_MODAL_ID: 'create-test',
 };

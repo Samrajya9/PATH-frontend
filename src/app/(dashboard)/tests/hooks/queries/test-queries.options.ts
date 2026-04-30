@@ -1,11 +1,15 @@
 import {
   UseSuspenseQueryOptions,
   UseQueryOptions,
+  QueryClient,
+  UseMutationOptions,
 } from '@tanstack/react-query';
 import testClient from '../../client/tests-client';
 import testsQueryKeys from '../../constants/tests.queryKeys';
 import { Test } from '@/types/tests';
 import { Meta } from '@/types/data-response-meta';
+import { ApiSuccess } from '@/types/api-response';
+import { TestFormValues } from '../../types/test-form.types';
 
 export const getAllTestsOptions = ({
   page,
@@ -37,6 +41,35 @@ export const getOneTestOptions = (
     queryFn: async () => {
       const response = await testClient.getOneTest(id);
       return response.data;
+    },
+  };
+};
+
+type TestResponse = ApiSuccess<Test>;
+
+type CreateTestMutationOptions = UseMutationOptions<
+  TestResponse,
+  Error,
+  TestFormValues
+>;
+export const createTestOptions = ({
+  queryClient,
+  options,
+}: {
+  queryClient: QueryClient;
+  options?: CreateTestMutationOptions;
+}): CreateTestMutationOptions => {
+  return {
+    ...options,
+    mutationFn: async (data) => {
+      return await testClient.createTest(data);
+    },
+    onSuccess: (...args) => {
+      queryClient.invalidateQueries({ queryKey: testsQueryKeys.all });
+      options?.onSuccess?.(...args);
+    },
+    onError: (...args) => {
+      options?.onError?.(...args);
     },
   };
 };
