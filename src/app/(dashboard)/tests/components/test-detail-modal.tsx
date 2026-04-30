@@ -18,7 +18,6 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
-import { Loader2 } from 'lucide-react';
 
 interface TestDetailModalProps {
   id: number;
@@ -28,13 +27,11 @@ export default function TestDetailModal({ id }: TestDetailModalProps) {
   const { data: test } = useSuspenseQuery(getOneTestOptions(id));
 
   return (
-    <DialogContent className="mx-2 max-w-[95vw] p-4 sm:mx-4 sm:max-w-[90vw] sm:p-6 md:max-w-lg lg:max-w-xl xl:max-w-2xl">
+    <DialogContent className="mx-2 max-w-[95vw] p-4 sm:mx-4 sm:max-w-[90vw] sm:p-6 md:max-w-lg lg:max-w-xl lg:p-8 xl:max-w-2xl">
       <DialogHeader>
         <div className="flex items-center justify-between">
           <DialogTitle className="text-2xl font-bold">{test.name}</DialogTitle>
-          <Badge variant="outline" className="capitalize">
-            {test.resultValueType}
-          </Badge>
+          <Badge className="capitalize">{test.resultValueType}</Badge>
         </div>
         <DialogDescription>
           Detailed information for test ID: {test.id}
