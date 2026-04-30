@@ -14,6 +14,15 @@ import {
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
 import { getAllDepartmentsOptions } from '../../departments/hooks/queries/department-queries-options';
 import { getAllTestUnitsOptions } from '../../test-units/hooks/queries/test-unit-queries-options';
 import { GenderEnum } from '@/types/reference-range';
@@ -107,20 +116,29 @@ export default function TestFormFields() {
                 <FieldLabel htmlFor="form-test-department">
                   Department
                 </FieldLabel>
-                <select
-                  id="form-test-department"
-                  value={field.value || ''}
-                  onChange={(e) => field.onChange(Number(e.target.value))}
-                  aria-invalid={fieldState.invalid}
-                  className="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-xs transition-colors focus-visible:ring-1 focus-visible:ring-ring focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50"
+                <Select
+                  value={field.value ? String(field.value) : ''}
+                  onValueChange={(val) => field.onChange(Number(val))}
                 >
-                  <option value="">Select department</option>
-                  {departments.map((dept) => (
-                    <option key={dept.id} value={dept.id}>
-                      {dept.name}
-                    </option>
-                  ))}
-                </select>
+                  <SelectTrigger
+                    id="form-test-department"
+                    aria-invalid={fieldState.invalid}
+                    className="w-full"
+                  >
+                    <SelectValue placeholder="Select department" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectGroup>
+                      <SelectLabel>Departments</SelectLabel>
+
+                      {departments.map((dept) => (
+                        <SelectItem key={dept.id} value={String(dept.id)}>
+                          {dept.name}
+                        </SelectItem>
+                      ))}
+                    </SelectGroup>
+                  </SelectContent>
+                </Select>
                 {fieldState.invalid && (
                   <FieldError>{fieldState.error?.message}</FieldError>
                 )}
@@ -135,20 +153,29 @@ export default function TestFormFields() {
             render={({ field, fieldState }) => (
               <Field data-invalid={fieldState.invalid}>
                 <FieldLabel htmlFor="form-test-unit">Test Unit</FieldLabel>
-                <select
-                  id="form-test-unit"
-                  value={field.value || ''}
-                  onChange={(e) => field.onChange(Number(e.target.value))}
-                  aria-invalid={fieldState.invalid}
-                  className="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-xs transition-colors focus-visible:ring-1 focus-visible:ring-ring focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50"
+                <Select
+                  value={field.value ? String(field.value) : ''}
+                  onValueChange={(val) => field.onChange(Number(val))}
                 >
-                  <option value="">Select test unit</option>
-                  {testUnits.map((unit) => (
-                    <option key={unit.id} value={unit.id}>
-                      {unit.name}
-                    </option>
-                  ))}
-                </select>
+                  <SelectTrigger
+                    id="form-test-unit"
+                    aria-invalid={fieldState.invalid}
+                    className="w-full"
+                  >
+                    <SelectValue placeholder="Select test unit" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectGroup>
+                      <SelectLabel>Test Units</SelectLabel>
+
+                      {testUnits.map((unit) => (
+                        <SelectItem key={unit.id} value={String(unit.id)}>
+                          {unit.name}
+                        </SelectItem>
+                      ))}
+                    </SelectGroup>
+                  </SelectContent>
+                </Select>
                 {fieldState.invalid && (
                   <FieldError>{fieldState.error?.message}</FieldError>
                 )}
@@ -358,19 +385,24 @@ export default function TestFormFields() {
                   control={control}
                   name={`referenceRanges.${idx}.gender`}
                   render={({ field }) => (
-                    <Badge variant="secondary" className="text-xs">
-                      <select
-                        value={field.value}
-                        onChange={field.onChange}
-                        className="cursor-pointer border-none bg-transparent text-xs outline-none"
+                    <Select value={field.value} onValueChange={field.onChange}>
+                      <SelectTrigger
+                        size="sm"
+                        className="h-6 gap-1 px-2 text-xs"
                       >
-                        {GENDER_OPTIONS.map((g) => (
-                          <option key={g} value={g}>
-                            {g}
-                          </option>
-                        ))}
-                      </select>
-                    </Badge>
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectGroup>
+                          <SelectLabel>Genders</SelectLabel>
+                          {GENDER_OPTIONS.map((g) => (
+                            <SelectItem key={g} value={g} className="text-xs">
+                              {g}
+                            </SelectItem>
+                          ))}
+                        </SelectGroup>
+                      </SelectContent>
+                    </Select>
                   )}
                 />
               </div>
