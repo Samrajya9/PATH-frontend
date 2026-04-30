@@ -3,6 +3,8 @@ import { ResultValueTypeEnum } from '@/types/tests';
 import { z } from 'zod';
 
 export const resultValueOptionSchema = z.object({
+  id: z.number().int().positive().optional(),
+
   name: z.string().min(1, 'Value is required').max(255, 'Value too long'),
   isDefault: z.boolean(), // No default
   sortOrder: z.number().int().min(0), // No default
@@ -10,6 +12,8 @@ export const resultValueOptionSchema = z.object({
 
 export const referenceRangeSchema = z
   .object({
+    id: z.number().int().positive().optional(),
+
     gender: z.enum(GenderEnum),
     age_min_years: z
       .number()

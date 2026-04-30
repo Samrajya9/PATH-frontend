@@ -1,6 +1,5 @@
 'use client';
 
-import React from 'react';
 import { FormProvider } from 'react-hook-form';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { toast } from 'sonner';
@@ -44,7 +43,27 @@ export default function UpdateTestUnitForm({
   );
 
   const onSubmit = form.handleSubmit((formData) => {
-    mutate({ id, data: formData });
+    const dirtyFields = form.formState.dirtyFields;
+
+    // Build payload with only changed fields
+    const changedData = Object.keys(dirtyFields).reduce(
+      (acc, key) => {
+        const field = key as keyof typeof formData;
+        if (dirtyFields[field]) {
+          acc[field] = formData[field];
+        }
+        return acc;
+      },
+      {} as Partial<typeof formData>
+    );
+
+    // Nothing changed, skip the API call
+    if (Object.keys(changedData).length === 0) {
+      toast.success('Test unit updated successfully');
+      closeModal(MODAL_REGISTRY.UPDATE_TEST_UNIT_MODAL_ID);
+      return;
+    }
+    mutate({ id, data: changedData });
   });
 
   const isLoading = form.formState.isSubmitting || isPending;
