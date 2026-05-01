@@ -21,7 +21,7 @@ const GENDER_OPTIONS = [
   GenderEnum.FEMALE,
 ] as const;
 
-export function ReferenceRangeFormFields({
+export default function ReferenceRangeFormFields({
   idx,
   onClick,
   showDelete = false,
@@ -37,7 +37,7 @@ export function ReferenceRangeFormFields({
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
           <span className="text-xs font-medium text-muted-foreground">
-            Range {idx || 0 + 1}
+            Range {(idx ?? 0) + 1}
           </span>
 
           <Controller
@@ -68,7 +68,7 @@ export function ReferenceRangeFormFields({
             variant="ghost"
             size="sm"
             className="h-7 w-7 p-0 text-destructive hover:text-destructive"
-            onClick={() => idx && onClick(idx)}
+            onClick={() => onClick(idx ?? 0)}
           >
             <Trash2 className="h-3.5 w-3.5" />
           </Button>

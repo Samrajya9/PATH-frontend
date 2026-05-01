@@ -3,9 +3,9 @@ import { FieldError } from '@/components/ui/field';
 import { GenderEnum } from '@/types/reference-range';
 import { Plus } from 'lucide-react';
 import { Controller, useFieldArray, useFormContext } from 'react-hook-form';
-import { ReferenceRangeFormFields } from './reference-range-form-fields';
+import ReferenceRangeFormFields from './reference-range-form-fields';
 
-export function ReferenceRangeArrayFormFields() {
+export default function ReferenceRangeArrayFormFields() {
   const { control } = useFormContext();
 
   const {

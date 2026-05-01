@@ -5,7 +5,7 @@ import useTestFormContext from '../contexts/test-form.context';
 import { Field, FieldLabel, FieldError } from '@/components/ui/field';
 import { Input } from '@/components/ui/input';
 import { ResultValueFormFields } from './result-value-form-fields';
-import { ReferenceRangeArrayFormFields } from './reference-range-array-form-fields';
+import ReferenceRangeArrayFormFields from './reference-range-array-form-fields';
 import TestUnitFormFields from './test-unit-form-fields';
 import DepartmentFormFields from './department-form-fields';
 
