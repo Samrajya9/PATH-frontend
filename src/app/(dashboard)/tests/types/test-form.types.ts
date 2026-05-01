@@ -1,9 +1,7 @@
 import z from 'zod';
-import {
-  testFormSchema,
-  referenceRangeSchema,
-  resultValueOptionSchema,
-} from '../schemas/test-form.schema';
+import { testFormSchema } from '../schemas/test-form.schema';
+import { referenceRangeSchema } from '../schemas/reference-range-form.schema';
+import { resultValueOptionSchema } from '../schemas/result-value-form.schema';
 
 export type TestFormValues = z.infer<typeof testFormSchema>;
 export type ReferenceRangeValues = z.infer<typeof referenceRangeSchema>;

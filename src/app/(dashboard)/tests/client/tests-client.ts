@@ -71,12 +71,6 @@ class TestClient {
       data
     );
   }
-
-  async deleteResultOptionsForTest(resultValueOptionId: number) {
-    return await clientHttp.delete<true>(
-      `${this.TESTS_ENDPOINT}/result-value-options/${resultValueOptionId}`
-    );
-  }
 }
 const testClient = new TestClient();
 export default testClient;

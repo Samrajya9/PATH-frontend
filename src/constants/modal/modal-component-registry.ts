@@ -6,4 +6,8 @@ export const MODAL_REGISTRY = {
   VIEW_TEST_DETAIL_MODAL_ID: 'view-test-detail',
   CREATE_TEST_MODAL_ID: 'create-test',
   UPDATE_TEST_MODAL_ID: 'update-test',
+  ADD_REF_RANGE_MODAL_ID: 'add-ref-range',
+  EDIT_REF_RANGE_MODAL_ID: 'edit-ref-range',
+  ADD_RESULT_OPTION_MODAL_ID: 'add-result-option',
+  EDIT_RESULT_OPTION_MODAL_ID: 'edit-result-option',
 };

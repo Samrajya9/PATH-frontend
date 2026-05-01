@@ -29,11 +29,16 @@ export default function TestCreateForm() {
         onError: (error: any) => {
           toast.error(error.message || 'Failed to create test');
         },
+        throwOnError: (error) => {
+          console.log(error);
+          return true;
+        },
       },
     })
   );
 
   const onSubmit = form.handleSubmit((data) => {
+    console.log(data);
     mutate(data);
   });
 

@@ -1,13 +1,12 @@
 'use client';
 
-import React from 'react';
-import { Controller } from 'react-hook-form';
+import { Controller, useFormContext } from 'react-hook-form';
 import useTestUnitFormContext from '../contexts/test-unit-form.context';
 import { Field, FieldLabel, FieldError } from '@/components/ui/field';
 import { Input } from '@/components/ui/input';
 
 export default function TestUnitFormFields() {
-  const { control } = useTestUnitFormContext();
+  const { control } = useFormContext();
 
   return (
     <>
