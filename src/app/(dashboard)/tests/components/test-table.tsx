@@ -6,6 +6,7 @@ import { Edit, Eye, MoreHorizontal, Trash } from 'lucide-react';
 import {
   deleteTestOptions,
   getAllTestsOptions,
+  getOneTestOptions,
 } from '../hooks/queries/test-queries.options';
 import { MODAL_REGISTRY } from '@/constants/modal/modal-component-registry';
 import TestDetailModal from './test-detail-modal';
@@ -47,6 +48,7 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from '@/components/ui/alert-dialog';
+import TestUpdateModal from './test-update-modal';
 
 export default function TestTable() {
   const [pendingDeleteId, setPendingDeleteId] = useState<number | null>(null);
@@ -185,7 +187,14 @@ export default function TestTable() {
                           View Detail
                         </DropdownMenuItem>
 
-                        <DropdownMenuItem>
+                        <DropdownMenuItem
+                          onClick={() => {
+                            openModal(
+                              MODAL_REGISTRY.UPDATE_TEST_MODAL_ID,
+                              <TestUpdateModal id={row.id} />
+                            );
+                          }}
+                        >
                           <Edit className="mr-2 h-4 w-4" />
                           Update
                         </DropdownMenuItem>

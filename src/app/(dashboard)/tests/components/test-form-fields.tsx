@@ -27,6 +27,7 @@ import { getAllDepartmentsOptions } from '../../departments/hooks/queries/depart
 import { getAllTestUnitsOptions } from '../../test-units/hooks/queries/test-unit-queries-options';
 import { GenderEnum } from '@/types/reference-range';
 import { ResultValueTypeEnum } from '@/types/tests';
+import { de } from 'zod/v4/locales';
 
 const RESULT_VALUE_TYPES = [
   ResultValueTypeEnum.NUMERIC,
@@ -117,6 +118,9 @@ export default function TestFormFields() {
                   Department
                 </FieldLabel>
                 <Select
+                  defaultValue={String(
+                    departments.find((d) => d.id == field.value)?.id
+                  )}
                   value={field.value ? String(field.value) : ''}
                   onValueChange={(val) => field.onChange(Number(val))}
                 >

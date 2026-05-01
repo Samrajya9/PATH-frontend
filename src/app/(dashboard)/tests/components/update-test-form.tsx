@@ -19,7 +19,13 @@ interface UpdateTestFormProps {
 }
 
 export default function UpdateTestForm({ id, data }: UpdateTestFormProps) {
-  const form = useTestForm({ initialValue: data });
+  const form = useTestForm({
+    initialValue: {
+      ...data,
+      department_id: data.department.id,
+      test_unit_id: data.testUnit.id,
+    },
+  });
   const queryClient = useQueryClient();
   const { closeModal } = useDialogContext();
 
